@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Screen Iframe Toggle</title>
+    <title>Modal Iframe with Pop Animation</title>
     <style>
         /* --- General Reset and Full-Screen Background Styles --- */
         html, body {
@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden; /* No scrolling allowed on the main page */
+            background-color: #333; /* Fallback color */
         }
 
         body {
@@ -25,16 +26,16 @@
 
         /* --- Button Styles (Fixed bottom-right, always visible) --- */
         #toggle-button {
-            position: fixed; /* Fixes the button relative to the viewport */
-            bottom: 20px;    /* Position 20px from the bottom */
-            right: 20px;     /* Position 20px from the right */
+            position: fixed; 
+            bottom: 20px;    
+            right: 20px;     
             padding: 10px 20px;
             cursor: pointer;
             background-color: #333;
             color: white;
             border: none;
             border-radius: 5px;
-            z-index: 20; /* Ensures the button is above everything else */
+            z-index: 30; /* Ensures the button is above everything else */
         }
         
         #toggle-button:focus-visible {
@@ -42,28 +43,57 @@
             outline-offset: 2px;
         }
 
-        /* --- Iframe Container Styles (Initially hidden/off-screen) --- */
+        /* --- Iframe Container (Modal Window) Styles --- */
         #iframe-container {
-            /* Start off-screen */
             position: fixed; 
-            top: 100%; /* Initially below the viewport */
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white; /* Solid background when visible */
-            overflow: hidden; 
+            /* Centering trick using top/left and transform */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5) rotateX(45deg); /* Start smaller and tilted */
             
-            /* Smooth transition when changing position */
-            transition: top 0.5s ease-out;
+            width: 800px;  /* Max width for the modal */
+            height: 500px; /* Fixed height for the modal */
+            max-width: 90vw;
+            max-height: 90vh;
+            background-color: white; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden; 
 
-            /* Performance hint */
-            will-change: top;
-            z-index: 10; /* Below the button's z-index */
+            /* Hide entirely until visible class is added */
+            opacity: 0;
+            pointer-events: none; /* Prevents interaction when hidden */
+            
+            /* Cooler transition property with a custom easing function */
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease-out;
+
+            z-index: 20; 
         }
 
         /* Class added by JavaScript to make it visible */
         #iframe-container.is-visible {
-            top: 0; /* Slides up to cover the full viewport (top: 0, height: 100%) */
+            transform: translate(-50%, -50%) scale(1) rotateX(0deg); /* Full size, no tilt */
+            opacity: 1;
+            pointer-events: auto; /* Allows interaction when visible */
+        }
+
+        /* --- Optional: Add a backdrop/overlay behind the modal --- */
+        #backdrop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 15;
+        }
+
+        #backdrop-overlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* --- Iframe Element Styles --- */
@@ -77,31 +107,33 @@
 </head>
 <body>
 
-    <!-- The button remains fixed on the screen -->
+    <div id="backdrop-overlay"></div>
+
     <button id="toggle-button" onclick="toggleIframe()" aria-expanded="false" aria-controls="iframe-container">
-        Show Fullscreen
+        Show Iframe Modal
     </button>
 
-    <!-- The container covers the full screen when active -->
     <div id="iframe-container">
-        <!-- The URL is set here as requested -->
-        <iframe id="content-frame" src="https://flamepass.com" title="External Content Frame"></iframe>
+        <iframe id="content-frame" src="YOUR_URL_HERE" title="External Content Frame"></iframe>
     </div>
 
     <script>
         function toggleIframe() {
             const container = document.getElementById('iframe-container');
             const button = document.getElementById('toggle-button');
+            const backdrop = document.getElementById('backdrop-overlay');
             
+            // Toggle visibility classes on both the container and the backdrop
             container.classList.toggle('is-visible');
+            backdrop.classList.toggle('is-visible');
 
             const isVisible = container.classList.contains('is-visible');
             
             if (isVisible) {
-                button.textContent = 'Hide Fullscreen';
+                button.textContent = 'Hide Iframe Modal';
                 button.setAttribute('aria-expanded', 'true');
             } else {
-                button.textContent = 'Show Fullscreen';
+                button.textContent = 'Show Iframe Modal';
                 button.setAttribute('aria-expanded', 'false');
             }
         }
