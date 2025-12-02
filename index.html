@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Cool Iframe Modal</title>
+    <title>Modal Iframe with Pop Animation</title>
     <style>
         /* --- General Reset and Full-Screen Background Styles --- */
         html, body {
@@ -12,8 +12,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden; /* No scrolling allowed on the main page */
-            /* We will apply the blur filter to the body dynamically using JavaScript */
-            transition: filter 0.4s ease; 
+            background-color: #333; /* Fallback color */
         }
 
         body {
@@ -25,14 +24,7 @@
             position: relative; 
         }
 
-        /* Class added by JS to blur the background when modal is active */
-        body.blurry-background {
-            filter: blur(5px); /* Blurs the main background image */
-            pointer-events: none; /* Prevents interaction with blurred background */
-            user-select: none;
-        }
-
-        /* --- Button Styles --- */
+        /* --- Button Styles (Fixed bottom-right, always visible) --- */
         #toggle-button {
             position: fixed; 
             bottom: 20px;    
@@ -43,7 +35,7 @@
             color: white;
             border: none;
             border-radius: 5px;
-            z-index: 40; /* Ensures the button is above everything */
+            z-index: 30; /* Ensures the button is above everything else */
         }
         
         #toggle-button:focus-visible {
@@ -54,24 +46,25 @@
         /* --- Iframe Container (Modal Window) Styles --- */
         #iframe-container {
             position: fixed; 
+            /* Centering trick using top/left and transform */
             top: 50%;
             left: 50%;
-            /* Cool Animation Start State */
-            transform: translate(-50%, -50%) scale(0.5) rotateX(45deg); 
+            transform: translate(-50%, -50%) scale(0.5) rotateX(45deg); /* Start smaller and tilted */
             
-            width: 800px;  
-            height: 500px; 
+            width: 800px;  /* Max width for the modal */
+            height: 500px; /* Fixed height for the modal */
             max-width: 90vw;
             max-height: 90vh;
             background-color: white; 
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
-            border-radius: 12px; /* Slightly cooler rounded corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
             overflow: hidden; 
 
+            /* Hide entirely until visible class is added */
             opacity: 0;
-            pointer-events: none; 
+            pointer-events: none; /* Prevents interaction when hidden */
             
-            /* Custom easing for a subtle bounce effect on appearance */
+            /* Cooler transition property with a custom easing function */
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease-out;
 
             z-index: 20; 
@@ -79,19 +72,19 @@
 
         /* Class added by JavaScript to make it visible */
         #iframe-container.is-visible {
-            transform: translate(-50%, -50%) scale(1) rotateX(0deg); 
+            transform: translate(-50%, -50%) scale(1) rotateX(0deg); /* Full size, no tilt */
             opacity: 1;
-            pointer-events: auto; 
+            pointer-events: auto; /* Allows interaction when visible */
         }
 
-        /* --- Backdrop Overlay (Darkens the background) --- */
+        /* --- Optional: Add a backdrop/overlay behind the modal --- */
         #backdrop-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Use a semi-transparent black */
+            background: rgba(0, 0, 0, 0.7);
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
@@ -121,22 +114,18 @@
     </button>
 
     <div id="iframe-container">
-        <!-- Remember to replace YOUR_URL_HERE with your desired URL -->
         <iframe id="content-frame" src="YOUR_URL_HERE" title="External Content Frame"></iframe>
     </div>
 
     <script>
         function toggleIframe() {
-            const body = document.body;
             const container = document.getElementById('iframe-container');
             const button = document.getElementById('toggle-button');
             const backdrop = document.getElementById('backdrop-overlay');
             
-            // Toggle visibility classes on all elements
+            // Toggle visibility classes on both the container and the backdrop
             container.classList.toggle('is-visible');
             backdrop.classList.toggle('is-visible');
-            // Add/Remove blur effect on the main body content
-            body.classList.toggle('blurry-background');
 
             const isVisible = container.classList.contains('is-visible');
             
