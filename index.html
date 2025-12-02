@@ -3,29 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Screen Background</title>
+    <title>Full Screen Background with Sliding Iframe</title>
     <style>
-        /* Ensure html and body take up the full height and width of the viewport */
+        /* --- Background Styles (from previous request) --- */
         html, body {
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
-            /* Hide both horizontal and vertical scroll bars */
             overflow: hidden; 
         }
 
         body {
-            /* Set the background image and properties */
-            /* UPDATED URL PATH BELOW: */
-            background-image: url('./asset/background1.png'); 
+            background-image: url('./asset/background.png'); 
             background-repeat: no-repeat;
-            background-position: center; /* Center the image */
-            background-size: cover; /* Scale the image to cover the entire container */
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: flex-end; /* Align content to the bottom */
+        }
+
+        /* --- Iframe Container and Button Styles --- */
+        #iframe-container {
+            width: 80%; /* Adjust width as needed */
+            height: 50vh; /* Adjust height as needed (e.g., 50% of viewport height) */
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            position: relative; /* Needed for positioning child elements */
+            overflow: hidden; /* Hides content that slides out of view */
+            
+            /* CSS Transition properties */
+            transform: translateY(100%); /* Start completely hidden below the screen */
+            transition: transform 0.5s ease-out; /* Smooth sliding animation over 0.5s */
+        }
+
+        /* Class added by JavaScript to make it visible */
+        #iframe-container.is-visible {
+            transform: translateY(0); /* Slide up to its visible position */
+        }
+
+        #content-frame {
+            width: 100%;
+            height: calc(100% - 40px); /* Iframe fills container minus button height */
+            border: none; /* Remove default iframe border */
+        }
+
+        /* --- Button Styles --- */
+        #toggle-button {
+            position: absolute;
+            bottom: 100%; /* Position button right above the container */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            z-index: 10; /* Ensure button is above other content */
         }
     </style>
 </head>
 <body>
-    <!-- Your content goes here -->
+
+    <button id="toggle-button" onclick="toggleIframe()">Show Iframe</button>
+
+    <div id="iframe-container">
+        <iframe id="content-frame" src="https://example.com" title="External Content"></iframe>
+    </div>
+
+    <script>
+        // JavaScript function to handle the toggle
+        function toggleIframe() {
+            const container = document.getElementById('iframe-container');
+            const button = document.getElementById('toggle-button');
+            
+            container.classList.toggle('is-visible');
+
+            // Change button text based on visibility state
+            if (container.classList.contains('is-visible')) {
+                button.textContent = 'Hide Iframe';
+            } else {
+                button.textContent = 'Show Iframe';
+            }
+        }
+
+        // Optional: Make the container visible by default on load if desired
+        // document.addEventListener('DOMContentLoaded', (event) => {
+        //     toggleIframe(); 
+        // });
+    </script>
 </body>
 </html>
