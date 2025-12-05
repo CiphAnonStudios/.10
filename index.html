@@ -104,47 +104,41 @@
             font-size: 12px;
         }
 
-        #blooket-cheats {
-    /* 1. Make this div the positioning context for its children */
+   #blooket-cheats {
+    /* Existing overlay styles */
     position: relative; 
-    
-    /* Optional: Ensure the container doesn't collapse if the image is the only content */
     display: inline-block; 
     max-width: 100%;
+    cursor: pointer; /* Changes cursor to a hand pointer to show it's clickable */
+
+    /* The crucial part for smooth animation */
+    transition: transform 0.5s ease; 
 }
 
+/* New CSS class that is added/removed by JavaScript */
+#blooket-cheats.moved-right {
+    /* This transforms (moves) the entire container 200 pixels to the right */
+    transform: translateX(200px); 
+}
+
+/* Image and Button styles (from previous answer, simplified for clarity) */
 #blooket-cheats img {
-    /* Ensure the image fills its container and stays responsive */
     width: 100%;
     height: auto;
-    /* Optional: Remove default margin if applied previously */
-    margin: 0; 
 }
 
 .overlay-button {
-    /* 2. Position the button absolutely within the parent div */
     position: absolute; 
-    
-    /* Position the top-left corner of the button in the center of the image */
     top: 50%; 
     left: 50%; 
-    
-    /* Adjusts the button's position to perfectly center it (moves it back up and left by half its own size) */
     transform: translate(-50%, -50%); 
-
-    /* Add some extra styling for visibility */
-    background-color: #4CAF50; /* Green background */
+    /* ... (other button styles omitted for brevity) ... */
+    background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
     border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    z-index: 10; /* Ensures the button is definitely on top of the image */
-}
-
-.overlay-button:hover {
-    background-color: #45a049;
+    z-index: 10;
+    pointer-events: none; /* Allows clicks to pass through the button to the parent div */
 }
 
     </style>
@@ -153,7 +147,7 @@
 
     <div id="backdrop-overlay"></div>
 
-  <div id="blooket-cheats">
+ <div id="blooket-cheats" onclick="moveContainer()">
     <img src="blooket_cheats.png" alt="Description of the image content">
     <button class="overlay-button">Click Me</button>
 </div>
@@ -220,6 +214,17 @@
                 });
             }
         });
+
+         // Get the element we want to move
+    const container = document.getElementById('blooket-cheats');
+
+    // This function runs every time the div is clicked
+    function moveContainer() {
+        // Toggle the 'moved-right' class:
+        // If the class is present, remove it (moves left/back to start).
+        // If the class is absent, add it (moves right 200px).
+        container.classList.toggle('moved-right');
+    }
     </script>
 </body>
 </html>
