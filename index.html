@@ -104,55 +104,49 @@
             font-size: 12px;
         }
 
-   #blooket-cheats {
-    /* Existing overlay styles */
+/* Container CSS (just for positioning the button relative to the image's starting position) */
+#blooket-cheats {
     position: relative; 
     display: inline-block; 
     max-width: 100%;
-    cursor: pointer; /* Changes cursor to a hand pointer to show it's clickable */
     bottom: -95px;
-
-    /* The crucial part for smooth animation */
-    transition: transform 0.5s ease; 
+    /* Removed the transition and transform rules from here */
 }
 
-        #moving-image {
+/* The Image CSS (This is what we will animate) */
+#moving-image {
     width: 100%;
     height: auto;
-    cursor: pointer; /* Indicates the image itself is clickable */
-    
-    /* Transition only the image's transform property */
-    transition: transform 0.5s ease; 
-    
-    /* Ensures the image respects the z-index stack relative to the button */
-    position: relative; 
+    cursor: pointer; 
+    position: relative; /* Essential for transform to work correctly */
     z-index: 1; 
+    
+    /* Transition applied directly to the image */
+    transition: transform 0.5s ease; 
 }
-/* New CSS class that is added/removed by JavaScript */
-#blooket-cheats.moved-right {
-    /* This transforms (moves) the entire container 200 pixels to the right */
+
+/* The NEW CSS class that JavaScript *toggles* on the #moving-image element */
+#moving-image.moved-right {
+    /* Only the image moves 510px to the right */
     transform: translateX(510px); 
 }
 
-/* Image and Button styles (from previous answer, simplified for clarity) */
-#blooket-cheats img {
-    width: 100%;
-    height: auto;
-}
-
+/* Button styles remain the same */
 .overlay-button {
     position: absolute; 
     top: 50%; 
     left: 50%; 
     transform: translate(-50%, -50%); 
-    /* ... (other button styles omitted for brevity) ... */
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
     border: none;
     z-index: 10;
-    pointer-events: none; /* Allows clicks to pass through the button to the parent div */
+    /* Removed pointer-events: none; so you can click the button if you want, 
+       but you can add it back if the image click handler needs to fire instead */
+    cursor: pointer;
 }
+
 
     </style>
 </head>
@@ -160,10 +154,12 @@
 
     <div id="backdrop-overlay"></div>
 
- <div id="blooket-cheats" onclick="moveContainer()">
-    <img id="moving-image" src="./asset/blooketcheats1.png" alt="Description of the image content">
+ <div id="blooket-cheats">
+    <!-- Changed the onclick to the correct function name -->
+    <img id="moving-image" src="./asset/blooketcheats1.png" alt="Description of the image content" onclick="moveImage()">
     <button class="overlay-button">Click Me</button>
 </div>
+
 
     <button id="toggle-button" class="action-button" onclick="toggleIframe()" aria-expanded="false" aria-controls="iframe-container">
         Show Iframe Modal
@@ -228,7 +224,9 @@
             }
         });
 
-          // Get the specific image element
+       // ... (Your other functions like toggleIframe, reloadIframe, etc. go here) ...
+    
+    // Get the specific image element
     const movingImage = document.getElementById('moving-image');
 
     // This function runs every time the image is clicked
