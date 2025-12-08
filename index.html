@@ -105,22 +105,14 @@
             font-size: 12px;
         }
 
-/* Container CSS */
 #blooket-cheats {
-    position: relative; 
-    display: inline-block; 
-    max-width: 100%;
-    bottom: -95px;
+    position: relative; /* Make position relative to allow absolute positioning of children */
+    display: inline-block; /* Ensure it only takes the size of the image */
 }
 
 /* The Image CSS (This is what we will animate and click) */
 #moving-image {
-    width: 100%;
-    height: auto;
-    cursor: pointer; /* Shows a hand cursor over the image */
-    position: relative; 
-    z-index: 1; /* Ensures image is below the button visually */
-    transition: transform 0.5s linear(0 0%, 0 1.8%, 0.01 3.6%, 0.03 6.35%, 0.07 9.1%, 0.13 11.4%, 0.19 13.4%, 0.27 15%, 0.34 16.1%, 0.54 18.35%, 0.66 20.6%, 0.72 22.4%, 0.77 24.6%, 0.81 27.3%, 0.85 30.4%, 0.88 35.1%, 0.92 40.6%, 0.94 47.2%, 0.96 55%, 0.98 64%, 0.99 74.4%, 1 86.4%, 1 100%); 
+    cursor: pointer; /* Pointer cursor for image */
 }
 
 /* The CSS class for the destination */
@@ -129,16 +121,17 @@
 }
 
 .overlay-button {
-    position: absolute; /* Position the button over the image */
-    top: 0; /* Adjust as necessary */
-    left: 0; /* Adjust as necessary */
-    width: 100%; /* Ensure it covers the image */
-    height: 100%; /* Ensure it covers the image */
-    background-color: transparent; /* Make background transparent */
-    border: none; /* No border */
-    z-index: 10; /* Keep above the image */
-    cursor: default; /* Change to default cursor */
-    pointer-events: none; /* Disable clicking */
+    position: absolute; /* Position button over the image */
+    bottom: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    background-color: rgba(76, 175, 80, 0.8); /* Change to your preferred color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    padding: 10px 15px; /* Adjust size */
+    border-radius: 5px; /* Round corners */
+    z-index: 20; /* Keep above the image */
+    cursor: pointer; /* Change to pointer cursor to show it’s clickable */
+    pointer-events: auto; /* Enable button to be clicked */
 }
 
 
