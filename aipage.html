@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Hub | Ciphanon Studios</title>
+    <title>Ciphanon AI Hub</title>
     <link rel="stylesheet" href="cdnjs.cloudflare.com">
     <link href="fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0c;
-            --sidebar-bg: #121214;
-            --accent: #ff6b00; /* Vivid Cyber Orange */
-            --accent-glow: rgba(255, 107, 0, 0.4);
+            --bg: #050505;
+            --sidebar: #0f0f11;
+            --accent: #ff6b00;
+            --accent-soft: rgba(255, 107, 0, 0.15);
             --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --border: #27272a;
-            --glass: rgba(255, 255, 255, 0.03);
+            --text-dim: #88888e;
+            --border: #222225;
         }
 
         body {
-            font-family: 'Outfit', 'Inter', sans-serif;
+            font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
             display: flex;
@@ -28,74 +27,77 @@
             overflow: hidden;
         }
 
-        /* Sidebar: High-Tech Look */
+        /* Sidebar Styling */
         .sidebar {
-            width: 320px;
-            background-color: var(--sidebar-bg);
+            width: 340px;
+            background-color: var(--sidebar);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
             z-index: 10;
         }
 
         .sidebar-header {
-            padding: 30px 20px;
-            background: linear-gradient(180deg, rgba(255,107,0,0.1) 0%, transparent 100%);
+            padding: 30px 25px;
             border-bottom: 1px solid var(--border);
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .logo-area {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .disclaimer {
-            font-size: 11px;
-            color: #ff9d00;
-            background: rgba(255, 157, 0, 0.1);
+        .logo-area h1 {
+            font-size: 1.4rem;
+            margin: 0;
+            letter-spacing: 2px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .disclaimer-box {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent);
             padding: 12px;
-            border-left: 3px solid var(--accent);
-            border-radius: 4px;
+            border-radius: 8px;
+            font-size: 11px;
             line-height: 1.4;
+            color: #ffb380;
         }
 
+        .disclaimer-box a { color: white; font-weight: bold; text-decoration: underline; }
+
+        /* Scroll Area */
         .sidebar-scroll {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 20px 25px;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) transparent;
         }
 
-        /* Category & Buttons */
-        .category-label {
+        .category-header {
             font-size: 10px;
-            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 2px;
             color: var(--text-dim);
-            margin: 25px 0 12px;
-            letter-spacing: 1.5px;
+            margin: 30px 0 15px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
-        .category-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-        .ai-button {
+        .category-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* AI Buttons */
+        .ai-item {
             width: 100%;
-            background: var(--glass);
-            color: var(--text-main);
+            background: #16161a;
             border: 1px solid var(--border);
-            padding: 14px 16px;
             border-radius: 12px;
+            padding: 12px 16px;
             margin-bottom: 10px;
             cursor: pointer;
             display: flex;
@@ -104,100 +106,156 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .ai-button:hover {
-            border-color: var(--accent);
-            background: rgba(255, 107, 0, 0.05);
-            box-shadow: 0 0 20px var(--accent-glow);
+        .ai-item:hover {
             transform: translateX(5px);
+            border-color: var(--accent);
+            background: var(--accent-soft);
         }
 
-        .rating-badge {
+        .ai-info { display: flex; flex-direction: column; text-align: left; }
+        .ai-name { font-size: 14px; font-weight: 600; color: white; }
+        .ai-url { font-size: 11px; color: var(--text-dim); }
+
+        .score-pill {
             background: var(--accent);
-            color: #000;
-            font-size: 11px;
+            color: black;
+            font-size: 10px;
             font-weight: 800;
-            padding: 3px 8px;
+            padding: 4px 8px;
             border-radius: 6px;
+            min-width: 25px;
+            text-align: center;
         }
 
-        /* Content Area & Context Bar */
-        .content-area { flex: 1; display: flex; flex-direction: column; }
+        /* Content Area */
+        .main-content { flex: 1; display: flex; flex-direction: column; }
 
-        .context-bar {
-            background: rgba(18, 18, 20, 0.8);
-            backdrop-filter: blur(10px);
+        .context-header {
+            background: #000;
             border-bottom: 1px solid var(--border);
-            padding: 15px 25px;
+            padding: 15px 30px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            height: 40px;
         }
 
-        .context-icon { color: var(--accent); font-size: 1.2rem; }
+        .context-label { color: var(--accent); font-weight: bold; font-size: 13px; text-transform: uppercase; }
+        .context-desc { color: var(--text-dim); font-size: 13px; }
 
-        #contextText { font-size: 14px; color: var(--text-dim); }
-        #contextText strong { color: var(--accent); font-size: 16px; }
-
-        .iframe-container { flex: 1; position: relative; background: #000; }
+        .iframe-container { flex: 1; background: #fff; }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* Custom Scrollbar */
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
-        .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--accent); }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="logo"><i class="fas fa-microchip"></i> AI CORE</div>
-            <div class="disclaimer">
-                <strong>SECURE NODE:</strong> Use Ciphanon Studios or a Proxy to bypass local restrictions.
+            <div class="logo-area">
+                <i class="fas fa-atom" style="color: var(--accent); font-size: 1.5rem;"></i>
+                <h1>AI System</h1>
+            </div>
+            <div class="disclaimer-box">
+                Use on <a href="https://ciphanon.com">Ciphanon Studios</a> or a proxy to bypass blocks.
             </div>
         </div>
 
         <div class="sidebar-scroll">
-            <span class="category-label">Primary Access</span>
-            <button class="ai-button" onclick="loadAI('./aiPage/duckai.html', 'DuckDuckGo AI', 'Private search with integrated AI features.', '95')">
-                <span>DuckDuckGo AI</span><span class="rating-badge">95</span>
-            </button>
+            <span class="category-header">Primary Access</span>
+            <div class="ai-item" onclick="loadAI('./aiPage/duckai.html', 'DuckDuckGo AI', 'Privacy-focused AI interface', '95')">
+                <div class="ai-info"><span class="ai-name">DuckDuckGo AI</span><span class="ai-url">duckai.html</span></div>
+                <div class="score-pill">95</div>
+            </div>
 
-            <span class="category-label">Research & Writing</span>
-            <button class="ai-button" onclick="loadAI('https://otter.ai', 'Otter AI', 'Neural meeting notes & real-time audio analysis.', '78')">
-                <span>Otter.ai</span><span class="rating-badge">78</span>
-            </button>
-            <button class="ai-button" onclick="loadAI('https://www.hemingwayapp.com', 'Hemingway', 'AI-assisted writing clarity and bold styling.', '84')">
-                <span>Hemingway</span><span class="rating-badge">84</span>
-            </button>
-            <button class="ai-button" onclick="loadAI('https://pdf.ai', 'PDF.ai', 'Dynamic document interrogation via LLM.', '76')">
-                <span>PDF.ai</span><span class="rating-badge">76</span>
-            </button>
+            <span class="category-header">General & Research</span>
+            <div class="ai-item" onclick="loadAI('https://otter.ai', 'Otter AI', 'Neural transcription & meeting notes', '78')">
+                <div class="ai-info"><span class="ai-name">Otter.ai</span><span class="ai-url">otter.ai</span></div>
+                <div class="score-pill">78</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://www.researchrabbitapp.com', 'Research Rabbit', 'Scientific literature mapping', '82')">
+                <div class="ai-info"><span class="ai-name">Research Rabbit</span><span class="ai-url">researchrabbitapp.com</span></div>
+                <div class="score-pill">82</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://www.hemingwayapp.com', 'Hemingway App', 'Writing clarity engine', '84')">
+                <div class="ai-info"><span class="ai-name">Hemingway</span><span class="ai-url">hemingwayapp.com</span></div>
+                <div class="score-pill">84</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://pdf.ai', 'PDF.ai', 'Chat with document binaries', '76')">
+                <div class="ai-info"><span class="ai-name">PDF.ai</span><span class="ai-url">pdf.ai</span></div>
+                <div class="score-pill">76</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://elicit.org', 'Elicit', 'AI Research Assistant', '81')">
+                <div class="ai-info"><span class="ai-name">Elicit</span><span class="ai-url">elicit.org</span></div>
+                <div class="score-pill">81</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://consensus.app', 'Consensus', 'Scientific research search', '83')">
+                <div class="ai-info"><span class="ai-name">Consensus</span><span class="ai-url">consensus.app</span></div>
+                <div class="score-pill">83</div>
+            </div>
 
-            <span class="category-label">Logic & Science</span>
-            <button class="ai-button" onclick="loadAI('mathsolver.microsoft.com', 'Microsoft Math', 'Neural network mathematical problem solving.', '92')">
-                <span>MS Math</span><span class="rating-badge">92</span>
-            </button>
-            <button class="ai-button" onclick="loadAI('https://www.geogebra.org', 'GeoGebra', 'Visualizing complex geometric algorithms.', '92')">
-                <span>GeoGebra</span><span class="rating-badge">92</span>
-            </button>
-            <button class="ai-button" onclick="loadAI('https://www.wolframalpha.com', 'WolframAlpha', 'Computational knowledge engine.', '85')">
-                <span>Wolfram</span><span class="rating-badge">85</span>
-            </button>
+            <span class="category-header">Math & Science</span>
+            <div class="ai-item" onclick="loadAI('https://mathsolver.microsoft.com/', 'Microsoft Math', 'Advanced equation solver', '92')">
+                <div class="ai-info"><span class="ai-name">MS Math Solver</span><span class="ai-url">microsoft.com</span></div>
+                <div class="score-pill">92</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://socratic.org', 'Socratic', 'Google learning assistant', '90')">
+                <div class="ai-info"><span class="ai-name">Socratic</span><span class="ai-url">socratic.org</span></div>
+                <div class="score-pill">90</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://www.geogebra.org', 'GeoGebra', 'Dynamic geometry & graphing', '92')">
+                <div class="ai-info"><span class="ai-name">GeoGebra</span><span class="ai-url">geogebra.org</span></div>
+                <div class="score-pill">92</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://www.mathway.com', 'Mathway', 'Quick math solutions', '70')">
+                <div class="ai-info"><span class="ai-name">Mathway</span><span class="ai-url">mathway.com</span></div>
+                <div class="score-pill">70</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://solvely.ai', 'Solvely', 'STEM problem solver', '70')">
+                <div class="ai-info"><span class="ai-name">Solvely</span><span class="ai-url">solvely.ai</span></div>
+                <div class="score-pill">70</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://www.wolframalpha.com', 'WolframAlpha', 'Computational intelligence', '85')">
+                <div class="ai-info"><span class="ai-name">WolframAlpha</span><span class="ai-url">wolframalpha.com</span></div>
+                <div class="score-pill">85</div>
+            </div>
 
-            <span class="category-label">Productivity</span>
-            <button class="ai-button" onclick="loadAI('https://apps.ankiweb.net', 'Anki', 'Spaced-repetition neural flashcards.', '94')">
-                <span>AnkiWeb</span><span class="rating-badge">94</span>
-            </button>
-            <button class="ai-button" onclick="loadAI('https://quizlet.com', 'Quizlet', 'Global learning & textbook neural database.', '85')">
-                <span>Quizlet</span><span class="rating-badge">85</span>
-            </button>
+            <span class="category-header">Learning & Productivity</span>
+            <div class="ai-item" onclick="loadAI('https://apps.ankiweb.net', 'Anki', 'Spaced repetition flashcards', '94')">
+                <div class="ai-info"><span class="ai-name">AnkiWeb</span><span class="ai-url">ankiweb.net</span></div>
+                <div class="score-pill">94</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://quizlet.com', 'Quizlet', 'Learning sets and cards', '85')">
+                <div class="ai-info"><span class="ai-name">Quizlet</span><span class="ai-url">quizlet.com</span></div>
+                <div class="score-pill">85</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://www.forestapp.cc', 'Forest', 'Focus & productivity timer', '88')">
+                <div class="ai-info"><span class="ai-name">Forest App</span><span class="ai-url">forestapp.cc</span></div>
+                <div class="score-pill">88</div>
+            </div>
+
+            <span class="category-header">Writing & Creativity</span>
+            <div class="ai-item" onclick="loadAI('https://aitestkitchen.withgoogle.com', 'AI Kitchen (Exp)', 'Google AI Experiments', '86')">
+                <div class="ai-info"><span class="ai-name">Google AI Kitchen</span><span class="ai-url">withgoogle.com</span></div>
+                <div class="score-pill">86</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://successtutoring.com.au', 'Success Tutoring', 'AI-led educational support', '88')">
+                <div class="ai-info"><span class="ai-name">Success Tutoring</span><span class="ai-url">successtutoring.com.au</span></div>
+                <div class="score-pill">88</div>
+            </div>
+            <div class="ai-item" onclick="loadAI('https://padlet.com', 'Padlet', 'Visual collaborative boards', '80')">
+                <div class="ai-info"><span class="ai-name">Padlet</span><span class="ai-url">padlet.com</span></div>
+                <div class="score-pill">80</div>
+            </div>
         </div>
     </div>
 
-    <div class="content-area">
-        <div class="context-bar">
-            <div class="context-icon"><i class="fas fa-terminal"></i></div>
-            <div id="contextText">Awaiting input... Select an AI module to initialize.</div>
+    <div class="main-content">
+        <div class="context-header">
+            <span class="context-label" id="ctxName">Status</span>
+            <span class="context-desc" id="ctxInfo">Initialize System Node to start.</span>
         </div>
         <div class="iframe-container">
             <iframe id="mainFrame" src="about:blank"></iframe>
@@ -205,10 +263,10 @@
     </div>
 
     <script>
-        function loadAI(url, title, info, rating) {
+        function loadAI(url, name, info, score) {
             document.getElementById('mainFrame').src = url;
-            document.getElementById('contextText').innerHTML =
-                `<strong>${title}</strong> [SYST_RATING: ${rating}%] &nbsp;&raquo;&nbsp; ${info}`;
+            document.getElementById('ctxName').innerText = name;
+            document.getElementById('ctxInfo').innerText = `[Rating: ${score}/100] — ${info}`;
         }
     </script>
 </body>
